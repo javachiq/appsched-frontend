@@ -1,11 +1,25 @@
-### appsched-frontend
+# Appointment Scheduler
 
-## Appointment Scheduler Web using react
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). 
+Other libraries used are:
+- [Lodash](https://lodash.com/)
+- For the design [React Bootstrap](https://react-bootstrap.netlify.app/)
 
-### Installation
+## Pre-requisite
+Installed Node.js
 
-- npm install
+## Installation
+Execute in the command prompt or terminal
+### `npm i` or `npm install`
 
-### Run
+## Configure
+Create `.env` file
+### `touch .env`
+Update file to include `PORT=8081`
 
-- npm start
+## Run the application
+Execute in the command prompt or terminal
+### `npm start`
+Your default browser will open automatically when compiling starts.
+If not, please go to URL: (http://localhost:8081/)
+
