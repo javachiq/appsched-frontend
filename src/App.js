@@ -9,8 +9,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import BoardAdmin from "./pages/BoardAdmin";
-import Doctor from "./pages/Doctor";
+import Admin from "./pages/Admin";
+import Doctors from "./pages/Doctors";
 import BoardUser from "./pages/BoardUser";
 import Appointments from "./pages/Appointments";
 import Appointment from "./pages/Appointment";
@@ -69,7 +69,16 @@ const App = () => {
           {showSchedulerBoard && (
             <li className="nav-item">
               <Link to={{ pathname: "/appointment", search: "new" }} className="nav-link">
-                New
+                New Appointment
+              </Link>
+            </li>
+          )}
+
+
+          {showSchedulerBoard && (
+            <li className="nav-item">
+              <Link to={"/doctors"} className="nav-link">
+                User
               </Link>
             </li>
           )}
@@ -77,15 +86,7 @@ const App = () => {
           {showAdminBoard && (
             <li className="nav-item">
               <Link to={"/admin"} className="nav-link">
-                Admin Board
-              </Link>
-            </li>
-          )}
-
-          {currentUser && (
-            <li className="nav-item">
-              <Link to={"/user"} className="nav-link">
-                User
+                Admin
               </Link>
             </li>
           )}
@@ -95,7 +96,7 @@ const App = () => {
           <div className="navbar-nav ml-auto">
             <li className="nav-item">
               <Link to={"/profile"} className="nav-link">
-                {currentUser.firstName}
+                Profile
               </Link>
             </li>
             <li className="nav-item">
@@ -128,9 +129,10 @@ const App = () => {
           <Route exact path="/register" component={Register} />
           <Route exact path="/profile" component={Profile} />
           <Route exact path="/appointments" component={Appointments} />
+          <Route exact path="/doctors" component={Doctors} />
           <Route exact path="/appointment" component={Appointment} />
           <Route path="/user" component={BoardUser} />
-          <Route path="/admin" component={BoardAdmin} />
+          <Route path="/admin" component={Admin} />
         </Switch>
       </div>
 

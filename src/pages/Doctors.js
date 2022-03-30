@@ -8,7 +8,7 @@ import EventBus from "../common/EventBus";
 import _ from "lodash";
 import moment from "moment";
 
-const Appointments = (props) => {
+const Doctors = (props) => {
   const [data, setData] = useState({});
   const [user, setUser] = useState({});
   const [isDoctor, setIsDoctor] = useState(false);
@@ -66,6 +66,7 @@ const Appointments = (props) => {
         (response) => {
          setMessage(response.data.message);
          setSuccessful(true);
+         window.location.reload();
         },
         (error) => {
           const resMessage =
@@ -140,7 +141,7 @@ const Appointments = (props) => {
             _.map(data, (obj) => {
               return (
                 <tr key={ obj.id }>
-                  <td scope="row">{ moment(obj.slot).format('MMMM DD, YYYY hh:mm A') }</td>
+                  <th scope="row">{ moment(obj.slot).format('MMMM DD, YYYY hh:mm A') }</th>
                   <td>{obj.patient}</td>
                   {!isDoctor && <td>{obj.doctorId}</td>}
                   <td>{obj.status}</td>
@@ -163,4 +164,4 @@ const Appointments = (props) => {
   );
 };
 
-export default Appointments;
+export default Doctors;

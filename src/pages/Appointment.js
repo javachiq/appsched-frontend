@@ -4,27 +4,13 @@ import { Form }  from "react-bootstrap";
 
 import _ from "lodash";
 import moment from "moment";
-// import Form from "react-validation/build/form";
-// import Input from "react-validation/build/input";
+import ReactSelect from "react-select";
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 
 import SchedulerService from "../services/scheduler.service";
-
-// import UserService from "../services/user.service";
 import EventBus from "../common/EventBus";
-// import CONFIG from "../config/config";
-
-// const required = (value) => {
-//   if (!value) {
-//     return (
-//       <div className="alert alert-danger" role="alert">
-//         This field is required!
-//       </div>
-//     );
-//   }
-// };
 
 const Appointment = (props) => {
   let minHour = new Date();
@@ -35,6 +21,7 @@ const Appointment = (props) => {
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
   const [isUpdate, setIsUpdate] = useState(false);
+  const [doctors, setDoctors] = useState([]);
 
   const {
     handleSubmit,
@@ -42,9 +29,7 @@ const Appointment = (props) => {
     control,
   } = useForm();
  const onSubmit = (data) => {
-   console.log('data', data.slot);
    _.set(data, 'slot', Date.parse(data.slot));
-   console.log('new data', data.slot);
    if (!isUpdate) {
     SchedulerService.postCreateAppointment(data).then(
       (response) => {
@@ -82,29 +67,31 @@ const Appointment = (props) => {
         }
       );
    }
-  };
-
-
-  // const onChangePatient = (e) => {
-  //   const patient = e.target.value;
-  //   setPatient(patient);
-  // };
-
-  // const onChangeDoctorId = (e) => {
-  //   const doctorId = e.target.value;
-  //   setDoctorId(doctorId);
-  // };
+ };
+  
+useEffect(() => {
+  SchedulerService.getDoctors()
+    .then((response) => response.data)
+    .then((json) => {
+      const selectValues = _.map(json, (obj) =>{
+        return {
+          value: obj.id,
+          label: `${obj.lastName}, ${obj.firstName}`
+        }
+      });
+      setDoctors(selectValues);
+    });
+  }, []);
+  
 
   useEffect(() => {
     const appId = props.history.location.search.substring(1);
     if (!_.includes(appId, "new")) {
       setIsUpdate(true);
-      console.log(appId);
       if (appId) {
         SchedulerService.getAppointment(appId)
         .then((response) => response.data)
         .then((json) => {
-          console.log(json[0].patient);
           reset({...json[0]});
             })
               .catch((error) => {
@@ -144,11 +131,17 @@ const Appointment = (props) => {
             </div>
             <div>
               <Form.Group className="mb-3" controlId="doctorId">
-                <Form.Label>Doctor Id</Form.Label>
+                <Form.Label>Doctor</Form.Label>
                 <Controller
-                  render={({ field }) => <Form.Control type="text" placeholder="" {...field}/>}
                   name="doctorId"
                   control={control}
+                  render={({ field: { value } }) => (
+                    <ReactSelect
+                      value={doctors.find(option => option.value === value)}
+                      isClearable
+                      options={doctors}
+                    />
+                  )}
                 />
               </Form.Group>
             </div>
@@ -177,6 +170,7 @@ const Appointment = (props) => {
                     timeIntervals={60}
                     minTime={minHour}
                     maxTime={maxHour}
+                    minDate={moment().toDate()}
                     dateFormat="MM/dd/yyyy h:mm aa"
                     filterDate={(date) => date.getDay() > 0 && date.getDay() < 7}
                   />

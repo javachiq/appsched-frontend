@@ -38,10 +38,15 @@ const getAppointment = (id) => {
     });
 };
 
+const getDoctors= () => {
+  return axios.get(API_URL + "getDoctors", { headers: authHeader() });
+};
+
 export default {
   postCreateAppointment,
   postUpdateAppointment,
   postDeleteAppointment,
   getAppointments,
-  getAppointment
+  getAppointment,
+  getDoctors
 };
