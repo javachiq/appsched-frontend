@@ -28,9 +28,11 @@ const Appointment = (props) => {
     reset,
     control,
   } = useForm();
- const onSubmit = (data) => {
-   _.set(data, 'slot', Date.parse(data.slot));
-   if (!isUpdate) {
+  const onSubmit = (data) => {
+    _.set(data, 'doctorId' , data.doctorId.value);
+    _.set(data, 'slot', Date.parse(data.slot));
+    console.log(data);
+    if (!isUpdate) {
     SchedulerService.postCreateAppointment(data).then(
       (response) => {
         setMessage(response.data.message);
@@ -135,10 +137,10 @@ useEffect(() => {
                 <Controller
                   name="doctorId"
                   control={control}
-                  render={({ field: { value } }) => (
+                  render={({ field: { onChange, value } }) => (
                     <ReactSelect
                       value={doctors.find(option => option.value === value)}
-                      isClearable
+                      onChange={onChange}
                       options={doctors}
                     />
                   )}

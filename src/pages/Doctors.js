@@ -17,17 +17,13 @@ const Doctors = (props) => {
 
   useEffect(() => {
     let currentUser = AuthService.getCurrentUser();
-    console.log("Use Effect 1");
-    console.log('currentUser', currentUser)
     setUser(currentUser);
   }, []);
 
   useEffect(() => {
-   console.log("Use Effect 2", user);
     SchedulerService.getAppointments()
       .then((response) => response.data)
       .then((json) => {
-        console.log(json);
         setData(json)
       })
       .catch((error) => {
@@ -36,7 +32,6 @@ const Doctors = (props) => {
           DoctorService.getAppointments()
           .then((response) => response.data)
           .then((json) => {
-            console.log(json);
             setData(json);
             setIsDoctor(true);
           })
@@ -60,7 +55,6 @@ const Doctors = (props) => {
   }, [user, message]);
 
   const handleApprove = (e) => {
-    console.log(e.target.value);
     const id = (e.target.value);
     DoctorService.approveAppointment(id).then(
         (response) => {
